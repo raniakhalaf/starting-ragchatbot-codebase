@@ -1,0 +1,14 @@
+{
+  "name": "rag-chatbot-frontend",
+  "version": "1.0.0",
+  "description": "Frontend development tools for RAG chatbot",
+  "scripts": {
+    "format": "prettier --write 'frontend/**/*.{js,css,html}'",
+    "format:check": "prettier --check 'frontend/**/*.{js,css,html}'",
+    "lint": "prettier --check 'frontend/**/*.{js,css,html}'"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1"
+  },
+  "private": true
+}
