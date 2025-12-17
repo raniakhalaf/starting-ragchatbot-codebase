@@ -5,7 +5,10 @@ const API_URL = '/api';
 let currentSessionId = null;
 
 // DOM elements
-let chatMessages, chatInput, sendButton, totalCourses, courseTitles, newChatButton;
+let chatMessages, chatInput, sendButton, totalCourses, courseTitles, newChatButton, themeToggle;
+
+// Theme management
+const THEME_KEY = 'course-assistant-theme';
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     totalCourses = document.getElementById('totalCourses');
     courseTitles = document.getElementById('courseTitles');
     newChatButton = document.getElementById('newChatButton');
-    
+    themeToggle = document.getElementById('themeToggle');
+
+    // Initialize theme before other setup
+    initializeTheme();
     setupEventListeners();
     createNewSession();
     loadCourseStats();
@@ -32,6 +38,15 @@ function setupEventListeners() {
 
     // New Chat button
     newChatButton.addEventListener('click', createNewSession);
+
+    // Theme toggle
+    themeToggle.addEventListener('click', toggleTheme);
+    themeToggle.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleTheme();
+        }
+    });
 
     // Suggested questions
     document.querySelectorAll('.suggested-item').forEach(button => {
@@ -217,5 +232,33 @@ async function loadCourseStats() {
         if (courseTitles) {
             courseTitles.innerHTML = '<span class="error">Failed to load courses</span>';
         }
+    }
+}
+
+// Theme Management Functions
+function initializeTheme() {
+    // Check localStorage for saved theme preference
+    const savedTheme = localStorage.getItem(THEME_KEY);
+
+    if (savedTheme === 'light') {
+        document.documentElement.classList.add('light-theme');
+    } else {
+        // Default to dark theme
+        document.documentElement.classList.remove('light-theme');
+    }
+}
+
+function toggleTheme() {
+    const root = document.documentElement;
+    const isLightTheme = root.classList.contains('light-theme');
+
+    if (isLightTheme) {
+        // Switch to dark theme
+        root.classList.remove('light-theme');
+        localStorage.setItem(THEME_KEY, 'dark');
+    } else {
+        // Switch to light theme
+        root.classList.add('light-theme');
+        localStorage.setItem(THEME_KEY, 'light');
     }
 }
