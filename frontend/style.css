@@ -5,7 +5,7 @@
     padding: 0;
 }
 
-/* CSS Variables */
+/* CSS Variables - Dark Theme (Default) */
 :root {
     --primary-color: #2563eb;
     --primary-hover: #1d4ed8;
@@ -24,6 +24,25 @@
     --welcome-border: #2563eb;
 }
 
+/* Light Theme - Optimized for Accessibility */
+:root.light-theme {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --background: #f5f7fa;
+    --surface: #ffffff;
+    --surface-hover: #f0f4f8;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --border-color: #cbd5e1;
+    --user-message: #2563eb;
+    --assistant-message: #f1f5f9;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    --radius: 12px;
+    --focus-ring: rgba(37, 99, 235, 0.3);
+    --welcome-bg: #dbeafe;
+    --welcome-border: #2563eb;
+}
+
 /* Base Styles */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -34,6 +53,26 @@ body {
     overflow: hidden;
     margin: 0;
     padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth transitions for theme changes */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Exclude certain elements from global transition to prevent conflicts */
+svg, img, input[type="text"], button svg {
+    transition: none;
+}
+
+/* Re-apply specific transitions where needed */
+button, .suggested-item, .theme-toggle {
+    transition: all 0.3s ease;
+}
+
+#chatInput, #sendButton {
+    transition: all 0.2s ease;
 }
 
 /* Container - Full Screen */
@@ -714,5 +753,194 @@ details[open] .suggested-header::before {
 @media (max-width: 1024px) {
     .sidebar {
         width: 280px;
+    }
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.theme-toggle:hover {
+    background: var(--surface-hover);
+    border-color: var(--primary-color);
+    transform: rotate(180deg);
+}
+
+.theme-toggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring), var(--shadow);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95) rotate(180deg);
+}
+
+/* Theme icons */
+.theme-icon {
+    position: absolute;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.sun-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+}
+
+.moon-icon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+/* Light theme icon states */
+:root.light-theme .sun-icon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+:root.light-theme .moon-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+}
+
+/* Adjust scrollbar colors for light theme */
+:root.light-theme .chat-messages::-webkit-scrollbar-track,
+:root.light-theme .sidebar::-webkit-scrollbar-track {
+    background: var(--surface);
+}
+
+:root.light-theme .chat-messages::-webkit-scrollbar-thumb,
+:root.light-theme .sidebar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+}
+
+:root.light-theme .chat-messages::-webkit-scrollbar-thumb:hover,
+:root.light-theme .sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Light theme code block adjustments */
+:root.light-theme .message-content code {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+:root.light-theme .message-content pre {
+    background-color: #e2e8f0;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+}
+
+:root.light-theme .message-content pre code {
+    background-color: transparent;
+    color: inherit;
+}
+
+/* Light theme message styling */
+:root.light-theme .message.assistant .message-content {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+:root.light-theme .message.user .message-content {
+    background: var(--user-message);
+    color: #ffffff;
+}
+
+/* Light theme button adjustments */
+:root.light-theme #sendButton {
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+:root.light-theme #sendButton:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Light theme input styling */
+:root.light-theme #chatInput {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+:root.light-theme #chatInput:focus {
+    background: var(--surface);
+    box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Light theme sidebar adjustments */
+:root.light-theme .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border-color);
+    box-shadow: 1px 0 3px rgba(0, 0, 0, 0.05);
+}
+
+:root.light-theme .stat-item {
+    background: var(--background);
+    border: 1px solid var(--border-color);
+}
+
+:root.light-theme .suggested-item {
+    background: var(--background);
+    border: 1px solid var(--border-color);
+}
+
+:root.light-theme .suggested-item:hover {
+    background: var(--surface);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Light theme welcome message */
+:root.light-theme .message.welcome-message .message-content {
+    background: var(--welcome-bg);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Light theme loading dots */
+:root.light-theme .loading span {
+    background: var(--text-secondary);
+}
+
+/* Light theme sources */
+:root.light-theme .sources-collapsible summary:hover {
+    color: var(--primary-color);
+}
+
+/* Light theme error and success messages */
+:root.light-theme .error-message {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+:root.light-theme .success-message {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+/* Mobile responsiveness for theme toggle */
+@media (max-width: 768px) {
+    .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 44px;
+        height: 44px;
     }
 }
